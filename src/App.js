@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import { useState } from "react/cjs/react.development"
 import './App.css';
+import border from "./images/pngwing.com.png"
 
-function App() {
+const App = () => {
+  const [tasks, setTasks] = useState(["Task 1", "Task 2", "Task 3"])
+  const [input, setInput] = useState("")
+  const [check, setCheck] = useState("false")
+  const changeHandler = (event) => {
+    setInput(event.target.value);
+  }
+  const newTask = (input) => {
+    const storedTasks = [...tasks]
+    storedTasks.push(input)
+    setTasks(storedTasks)
+    setInput("")
+  }
+
+  const completeTask = () => {
+    setCheck(!check)
+  }
+
+  const removeTask = (index) => {
+    const storedTasks = [...tasks]
+    storedTasks.splice(index, 1)
+    setTasks(storedTasks)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={"mainDiv"}>
+      <div className={"topBox"}>
+      <h1>Task List</h1>
+      <input type="text" onChange={changeHandler} value={input}/>
+      <button onClick={() => newTask(input)}>Add</button>
+      </div>
+      <ul className={"liParentBox"}>
+        {tasks.map((task, index) => {
+          return (
+            <div className={"liBox"}>
+            <li key={index} className={check ? null : "strike"}>{task}</li>
+            <input type="checkbox" onClick={completeTask}/>
+            <button onClick={removeTask}><i class="far fa-trash-alt"></i></button>
+            </div>
+          )
+        })}
+      </ul>
     </div>
-  );
+  )
 }
 
+
 export default App;
+
+
